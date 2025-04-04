@@ -32,11 +32,14 @@ class UsuarioController extends Controller
 
     public function getPermisos(string $id)
     {
-        $user = Usuario::findOrFail($id)->load('grupos.permisos');
+        $user = Usuario::findOrFail($id);
+        $permisos = $user->permisos();
+        $user['permisos'] = $permisos;
         // $user->load('grupos.permisos');
-        $user->grupos->each->makeHidden(['pivot']);
+        // $user->grupos->each->makeHidden(['pivot']);
+        // $user->grupos->each->permisos->each->makeHidden(['pivot']);
         return response()->json([
-            'user' => $user,
+            'user' => $user
         ]);
     }
 
