@@ -26,4 +26,14 @@ class Usuario extends Model
     {
         return $this->belongsToMany(Grupo::class, 'grupo_usuario', 'usuario_id', 'grupo_id');
     }
+
+    public function permisos()
+    {
+        $permisoIds = $this->grupos()
+            ->join('grupo_permiso', 'grupo.id', '=', 'grupo_permiso.grupo_id')
+            ->pluck('grupo_permiso.permiso_id')
+            ->unique();
+
+        return Permiso::whereIn('id', $permisoIds)->get();
+    }
 }
